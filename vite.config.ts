@@ -9,6 +9,7 @@ export default defineConfig(({ mode }) => {
         lib: {
           entry: [
             './src/client.ts',
+            './src/client/SiteIndex.ts',
           ],
           formats: ['es'],
           fileName: '[name]',

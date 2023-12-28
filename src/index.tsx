@@ -12,6 +12,11 @@ const app = new Hono()
 import taskRouter from './routes/tasks';
 import siteRouter from './routes/site';
 import postRouter from './routes/post';
+//
+// sites
+import SiteIndex from './pages/sites/App';
+//import TaskShow from './pages/sites/show/App';
+//import TaskEdit from './pages/sites/edit/App';
 
 //
 function Page(props: any) {
@@ -23,10 +28,18 @@ function Page(props: any) {
   )
 }
 //
+/*
 app.get('/', (c) => {
   return c.html(renderToString(Page([])))
 })
-
+*/
+app.get('/', async (c) => { 
+  let page = c.req.query('page');
+  if(!page) { page = '1';}
+console.log("page=", page);
+//  const items = await siteRouter.get_list(c, c.env.DB, page);
+  return c.html(renderToString(<SiteIndex items={[]} page={page} />));
+});
 /******
 API
 ******/
