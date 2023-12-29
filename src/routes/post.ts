@@ -84,13 +84,14 @@ console.log(sql);
      *
      * @return
      */    
-    get: async function(body, c, DB)
+    //(c, c.env.DB, id)
+    get: async function(c, DB, id)
     {
         //console.log("#get");
         try{    
-            const sql = `SELECT * FROM Post WHERE id = ${body.id}`;            
+            const sql = `SELECT * FROM Post WHERE id = ${id}`;            
+console.log(sql);
             const result = await DB.prepare(sql).all();
-            //console.log(result.results);
             if(result.results.length < 1) {
                 console.error("Error, results.length < 1");
                 return {};

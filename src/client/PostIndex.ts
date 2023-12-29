@@ -5,7 +5,7 @@ import htm from 'htm';
 const html = htm.bind(h);
 console.log("#Page4.client.ts");
 //
-const SiteIndex = {
+const PostIndex = {
     /**
      *
      * @param
@@ -70,10 +70,13 @@ console.log(json);
                 li.push(html`
                 <div>
                     <a href="/sites/${element.id}"><h3 class="text-3xl font-bold"
-                    >${element.name}</h3></a>                    
+                    >${element.title}</h3></a>                    
                     <p>id: ${element.id}</p>
-                    <a href="/sites/${element.id}">
+                    <a href="/posts/${element.id}">
                         <button  class="btn-outline-purple ms-2 my-2">Show</button>
+                    </a>
+                    <a href="/post_edit/${element.id}">
+                        <button  class="btn-outline-purple ms-2 my-2">Edit</button>
                     </a>
                     <hr class="my-2" />
                 </div>
@@ -81,8 +84,8 @@ console.log(json);
                 );
             });
             /*
-            <a href="/memo_edit/${element.id}">
-                <button  class="btn-outline-purple ms-2 my-2">Edit</button>
+            <a href="/posts/${element.id}">
+                <button  class="btn-outline-purple ms-2 my-2">Show</button>
             </a>
             */
             render(li, document.getElementById("root"));
@@ -98,14 +101,15 @@ console.log(json);
      *
      * @return
      */  
-    getList : async function(): Promise<any>
+    getList : async function(id: number): Promise<any>
     {
         try{
             let ret: any[] = [];
             const item = {
+                siteId: id,
             }
             const body = JSON.stringify(item);		
-            const res = await fetch("/api/sites/get_list", {
+            const res = await fetch("/api/posts/get_list", {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},      
                 body: body
@@ -126,7 +130,9 @@ console.log(json);
     /**/
     initProc: async function() {
         //console.log("init");
-        const res = await this.getList();
+        const id = (<HTMLInputElement>document.querySelector("#item_id")).value;
+        console.log("id=", id);
+        const res = await this.getList(Number(id));
 console.log(res);
         this.displayItems(res);
 //displayItems
@@ -141,4 +147,4 @@ console.log("result=", result);
         }); 
     },
 }
-SiteIndex.initProc();
+PostIndex.initProc();

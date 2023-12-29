@@ -1,6 +1,7 @@
 import { Hono } from 'hono'
 import { renderToString } from 'react-dom/server';
 import type { Database } from '@cloudflare/d1'
+import './index.css'
 //
 interface Env {
   DB: Database
@@ -15,8 +16,12 @@ import postRouter from './routes/post';
 //
 // sites
 import SiteIndex from './pages/sites/App';
-//import TaskShow from './pages/sites/show/App';
+import SiteShow from './pages/sites/show/App';
 //import TaskEdit from './pages/sites/edit/App';
+import PostsIndex from './pages/posts/App';
+import PostsCreate from './pages/posts/create/App';
+import PostsEdit from './pages/posts/edit/App';
+import PostsShow from './pages/posts/show/App';
 
 //
 function Page(props: any) {
@@ -28,18 +33,41 @@ function Page(props: any) {
   )
 }
 //
-/*
-app.get('/', (c) => {
-  return c.html(renderToString(Page([])))
-})
-*/
 app.get('/', async (c) => { 
   let page = c.req.query('page');
   if(!page) { page = '1';}
 console.log("page=", page);
-//  const items = await siteRouter.get_list(c, c.env.DB, page);
   return c.html(renderToString(<SiteIndex items={[]} page={page} />));
 });
+app.get('/sites/:id', async (c) => { 
+  const {id} = c.req.param();
+console.log("id=", id);
+//console.log(item);
+  return c.html(renderToString(<PostsIndex item={[]} id={Number(id)} />));
+});
+app.get('/posts/create/:id', async (c) => { 
+  const {id} = c.req.param();
+console.log("id=", id);
+//console.log(item);
+  return c.html(renderToString(<PostsCreate item={[]} id={Number(id)} />));
+});
+//PostsShow
+app.get('/posts/:id', async (c) => { 
+  const {id} = c.req.param();
+console.log("id=", id);
+  const item = await postRouter.get(c, c.env.DB, id);
+//console.log(item);
+  return c.html(renderToString(<PostsShow item={item} id={Number(id)} />));
+});
+
+app.get('/post_edit/:id', async (c) => { 
+  const {id} = c.req.param();
+  //console.log("id=", id);
+  const item = await postRouter.get(c, c.env.DB, id);
+  //console.log(item);
+  return c.html(renderToString(<PostsEdit item={item} id={Number(id)} />));
+});
+
 /******
 API
 ******/
@@ -54,11 +82,13 @@ app.post('/api/posts/get_list', async (c) => {
   const resulte = await postRouter.get_list(body, c, c.env.DB);
   return c.json({ret: "OK", data: resulte});
 });
+/*
 app.post('/api/posts/get', async (c) => { 
   const body = await c.req.json();
   const resulte = await postRouter.get(body, c, c.env.DB);
   return c.json({ret: "OK", data: resulte});
 });
+*/
 app.post('/api/posts/update', async (c) => { 
   const body = await c.req.json();
   const resulte = await postRouter.update(body, c.env.DB);

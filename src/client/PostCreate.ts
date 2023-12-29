@@ -3,16 +3,16 @@ import { h, Component, render } from 'preact';
 import htm from 'htm';
 
 const html = htm.bind(h);
-console.log("#Page4.client.ts");
+console.log("#PostCreate.client.ts");
 //
-const SiteIndex = {
+const PostCreate = {
     /**
      *
      * @param
      *
      * @return
      */  
-    addItem : async function()
+    addItem : async function(siteId: number)
     {
         try{
             let ret = false;
@@ -27,13 +27,16 @@ const SiteIndex = {
                 contentValue = content.value;
             }              
             const item = {
-                name: titleValue,
+                title: titleValue,
                 content: contentValue,
+                siteId: siteId,
+                categoryId: 0,
+                userId: 0,
             }
 //console.log("title=", titleValue);
 console.log(item);
             const body = JSON.stringify(item);		
-            const res = await fetch("/api/sites/create", {
+            const res = await fetch("/api/posts/create", {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},      
                 body: body
@@ -55,43 +58,7 @@ console.log(json);
             console.error(e);
             throw new Error('Error , addItem');
         }
-    },
-    /**
-     *
-     * @param
-     *
-     * @return
-     */ 
-    displayItems: function(items: any[])
-    {
-        try{      
-            const li: any[] = [];  
-            items.forEach((element) => {
-                li.push(html`
-                <div>
-                    <a href="/sites/${element.id}"><h3 class="text-3xl font-bold"
-                    >${element.name}</h3></a>                    
-                    <p>id: ${element.id}</p>
-                    <a href="/sites/${element.id}">
-                        <button  class="btn-outline-purple ms-2 my-2">Show</button>
-                    </a>
-                    <hr class="my-2" />
-                </div>
-                `
-                );
-            });
-            /*
-            <a href="/memo_edit/${element.id}">
-                <button  class="btn-outline-purple ms-2 my-2">Edit</button>
-            </a>
-            */
-            render(li, document.getElementById("root"));
-    
-        } catch (e) {
-            console.error(e);
-            throw new Error('Error , displayItems');
-        }
-    },         
+    },      
     /**
      *
      * @param
@@ -126,19 +93,20 @@ console.log(json);
     /**/
     initProc: async function() {
         //console.log("init");
-        const res = await this.getList();
-console.log(res);
-        this.displayItems(res);
-//displayItems
+        const id = (<HTMLInputElement>document.querySelector("#item_id")).value;
+console.log("id=", id);
         //btn
         const button = document.querySelector('#save');
         button?.addEventListener('click', async () => {
-            const result = await this.addItem();
+            const result = await this.addItem(Number(id));
 console.log("result=", result);
             if(result === true) {
-                location.reload();
+                //http://localhost:5173/sites/11
+                location.href= `/sites/${id}`;
+
+//                location.reload();
             }
         }); 
     },
 }
-SiteIndex.initProc();
+PostCreate.initProc();

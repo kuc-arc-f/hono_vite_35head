@@ -3,16 +3,16 @@ import { h, Component, render } from 'preact';
 import htm from 'htm';
 
 const html = htm.bind(h);
-console.log("#Page4.client.ts");
+console.log("#PostEdit.client.ts");
 //
-const SiteIndex = {
+const PostEdit = {
     /**
      *
      * @param
      *
      * @return
      */  
-    addItem : async function()
+    addItem : async function(id: number)
     {
         try{
             let ret = false;
@@ -27,13 +27,16 @@ const SiteIndex = {
                 contentValue = content.value;
             }              
             const item = {
-                name: titleValue,
+                title: titleValue,
                 content: contentValue,
+                id: id,
+                categoryId: 0,
+                userId: 0,
             }
 //console.log("title=", titleValue);
 console.log(item);
             const body = JSON.stringify(item);		
-            const res = await fetch("/api/sites/create", {
+            const res = await fetch("/api/posts/update", {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},      
                 body: body
@@ -55,90 +58,77 @@ console.log(json);
             console.error(e);
             throw new Error('Error , addItem');
         }
-    },
-    /**
-     *
-     * @param
-     *
-     * @return
-     */ 
-    displayItems: function(items: any[])
-    {
-        try{      
-            const li: any[] = [];  
-            items.forEach((element) => {
-                li.push(html`
-                <div>
-                    <a href="/sites/${element.id}"><h3 class="text-3xl font-bold"
-                    >${element.name}</h3></a>                    
-                    <p>id: ${element.id}</p>
-                    <a href="/sites/${element.id}">
-                        <button  class="btn-outline-purple ms-2 my-2">Show</button>
-                    </a>
-                    <hr class="my-2" />
-                </div>
-                `
-                );
-            });
-            /*
-            <a href="/memo_edit/${element.id}">
-                <button  class="btn-outline-purple ms-2 my-2">Edit</button>
-            </a>
-            */
-            render(li, document.getElementById("root"));
-    
-        } catch (e) {
-            console.error(e);
-            throw new Error('Error , displayItems');
-        }
-    },         
+    }, 
     /**
      *
      * @param
      *
      * @return
      */  
-    getList : async function(): Promise<any>
+    delete : async function(id: number)
     {
         try{
-            let ret: any[] = [];
+            let ret = false;
             const item = {
+                api_key: "",
+                //@ts-ignore
+                id: Number(id),
             }
-            const body = JSON.stringify(item);		
-            const res = await fetch("/api/sites/get_list", {
+console.log(item);
+//console.log("title=", titleValue);
+            const body = JSON.stringify(item);	
+            const res = await fetch("/api/posts/delete", {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},      
                 body: body
             });
-            const json = await res.json()
-console.log(json);   
             if (res.status !== 200) {
                 console.error("error, status <> 200");
                 throw new Error(await res.text());
             }
-            ret = json.data;
+            const json = await res.json()
+console.log(json);   
+            if (json.ret !==  "OK") {
+                console.error("Error, json.ret <> OK");
+                return ret;
+            }
+            ret = true;
             return ret;
         } catch (e) {
             console.error(e);
-            throw new Error('Error , getList');
+            throw new Error('Error , delete');
         }
-    }, 
-    /**/
+    },     
+    /**
+     *
+     * @param
+     *
+     * @return
+     */  
     initProc: async function() {
         //console.log("init");
-        const res = await this.getList();
-console.log(res);
-        this.displayItems(res);
-//displayItems
+        const id = (<HTMLInputElement>document.querySelector("#item_id")).value;
+        const site_id = (<HTMLInputElement>document.querySelector("#site_id")).value;
+console.log("id=", id);
+//console.log("site_id=", site_id);
         //btn
         const button = document.querySelector('#save');
         button?.addEventListener('click', async () => {
-            const result = await this.addItem();
+            const result = await this.addItem(Number(id));
 console.log("result=", result);
             if(result === true) {
-                location.reload();
+                location.href= `/sites/${site_id}`;
+            }
+        }); 
+        //btn_delete
+        const btn_delete = document.querySelector('#btn_delete');
+        btn_delete?.addEventListener('click', async () => {
+            const result = await this.delete(Number(id));
+console.log("result=", result);
+            if(result === true) {
+                location.href= `/sites/${site_id}`;
             }
         }); 
     },
 }
-SiteIndex.initProc();
+PostEdit.initProc();
