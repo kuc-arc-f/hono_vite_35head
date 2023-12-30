@@ -1,7 +1,6 @@
 import { Hono } from 'hono'
 import { renderToString } from 'react-dom/server';
 import type { Database } from '@cloudflare/d1'
-//import './index.css'
 //
 interface Env {
   DB: Database
@@ -41,9 +40,11 @@ console.log("page=", page);
 });
 app.get('/sites/:id', async (c) => { 
   const {id} = c.req.param();
-console.log("id=", id);
-//console.log(item);
-  return c.html(renderToString(<PostsIndex item={[]} id={Number(id)} />));
+  const body = {id: id}; 
+  const item = await siteRouter.get(body, c, c.env.DB);
+//  console.log(item);
+  console.log("id=", id);
+  return c.html(renderToString(<PostsIndex item={item} id={Number(id)} />));
 });
 app.get('/posts/create/:id', async (c) => { 
   const {id} = c.req.param();

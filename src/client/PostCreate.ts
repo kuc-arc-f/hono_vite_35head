@@ -1,6 +1,7 @@
 
 import { h, Component, render } from 'preact';
 import htm from 'htm';
+import { marked } from 'marked';
 
 const html = htm.bind(h);
 console.log("#PostCreate.client.ts");
@@ -90,7 +91,69 @@ console.log(json);
             throw new Error('Error , getList');
         }
     }, 
-    /**/
+    /**
+     *
+     * @param
+     *
+     * @return
+     */ 
+    desiplayPreview: function(){
+        try{
+            let titleValue = "";
+            const title = document.querySelector("#title") as HTMLInputElement;
+            if(title) { titleValue = title.value;}
+            let contentValue = "";
+            const content = document.querySelector("#content") as HTMLInputElement;
+            if(content) { contentValue = content.value;} 
+            //console.log(contentValue);
+            //@ts-ignore 
+            contentValue = marked.parse(contentValue);
+console.log(contentValue);
+            const titleElem = `<h1>${titleValue}</h1><hr />`;
+            const preview_box = document.querySelector("#preview_box") as HTMLInputElement;
+            if(preview_box) {
+                preview_box.innerHTML = titleElem + contentValue;
+            }
+            //
+            const edit_box_wrap = document.querySelector(`#edit_box_wrap`) as HTMLInputElement;
+            if (!edit_box_wrap.classList.contains('d-none')) {
+                edit_box_wrap?.classList.add('d-none');
+            }
+            const preview_box_wrap = document.querySelector(`#preview_box_wrap`) as HTMLInputElement;
+            if (preview_box_wrap.classList.contains('d-none')) {
+                preview_box_wrap?.classList.remove('d-none');
+            }
+        } catch (e) {
+          console.error(e);
+        }
+    },    
+    /**
+     *
+     * @param
+     *
+     * @return
+     */ 
+    displayEdit: function(){
+        try{
+            //
+            const edit_box_wrap = document.querySelector(`#edit_box_wrap`) as HTMLInputElement;
+            if (edit_box_wrap.classList.contains('d-none')) {
+                edit_box_wrap?.classList.remove('d-none');
+            }
+            const preview_box_wrap = document.querySelector(`#preview_box_wrap`) as HTMLInputElement;
+            if (!preview_box_wrap.classList.contains('d-none')) {
+                preview_box_wrap?.classList.add('d-none');
+            }
+        } catch (e) {
+            console.error(e);
+        }
+    },
+    /**
+     *
+     * @param
+     *
+     * @return
+     */
     initProc: async function() {
         //console.log("init");
         const id = (<HTMLInputElement>document.querySelector("#item_id")).value;
@@ -101,12 +164,21 @@ console.log("id=", id);
             const result = await this.addItem(Number(id));
 console.log("result=", result);
             if(result === true) {
-                //http://localhost:5173/sites/11
                 location.href= `/sites/${id}`;
-
-//                location.reload();
             }
         }); 
+        //
+        //btn_edit
+        const btn_edit = document.querySelector('#btn_edit');
+        btn_edit?.addEventListener('click', async () => {
+            const result = await this.displayEdit();
+        }); 
+        //btn_preview
+        const btn_preview = document.querySelector('#btn_preview');
+        btn_preview?.addEventListener('click', async () => {
+            const result = await this.desiplayPreview();
+//console.log("result=", result);
+        });        
     },
 }
 PostCreate.initProc();

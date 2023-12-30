@@ -71,7 +71,7 @@ console.log(json);
                 <div>
                     <a href="/sites/${element.id}"><h3 class="text-3xl font-bold"
                     >${element.title}</h3></a>                    
-                    <p>id: ${element.id}</p>
+                    <p>id: ${element.id}, ${element.createdAt}</p>
                     <a href="/posts/${element.id}">
                         <button  class="btn-outline-purple ms-2 my-2">Show</button>
                     </a>

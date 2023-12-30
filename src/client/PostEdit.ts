@@ -139,9 +139,10 @@ console.log(json);
             //@ts-ignore 
             contentValue = marked.parse(contentValue);
 console.log(contentValue);
+            const titleElem = `<h1>${titleValue}</h1><hr />`;
             const preview_box = document.querySelector("#preview_box") as HTMLInputElement;
             if(preview_box) {
-                preview_box.innerHTML = contentValue;
+                preview_box.innerHTML = titleElem + contentValue;
             }
             //
             const edit_box_wrap = document.querySelector(`#edit_box_wrap`) as HTMLInputElement;
