@@ -15,6 +15,7 @@ hono + preact.js + pages + D1, headless CMS sample
 ***
 ### blog 
 
+https://zenn.dev/knaka0209/scraps/49ed95bad42c1d
 
 ***
 
