@@ -1,4 +1,5 @@
 import { Hono } from 'hono'
+import { basicAuth } from 'hono/basic-auth'
 import { renderToString } from 'react-dom/server';
 import type { Database } from '@cloudflare/d1'
 //
@@ -7,7 +8,18 @@ interface Env {
 }
 //
 const app = new Hono()
-
+//basicAuth
+/*
+const basicName = import.meta.env.VITE_USER_NAME;
+const basicPassword = import.meta.env.VITE_USER_PASSWORD;
+app.use(
+  "/*",
+  basicAuth({
+    username: basicName,
+    password: basicPassword,
+  })
+);
+*/
 // router
 import taskRouter from './routes/tasks';
 import siteRouter from './routes/site';
@@ -83,13 +95,11 @@ app.post('/api/posts/get_list', async (c) => {
   const resulte = await postRouter.get_list(body, c, c.env.DB);
   return c.json({ret: "OK", data: resulte});
 });
-/*
 app.post('/api/posts/get', async (c) => { 
   const body = await c.req.json();
-  const resulte = await postRouter.get(body, c, c.env.DB);
+  const resulte = await postRouter.get(c, c.env.DB, body.id);
   return c.json({ret: "OK", data: resulte});
 });
-*/
 app.post('/api/posts/update', async (c) => { 
   const body = await c.req.json();
   const resulte = await postRouter.update(body, c.env.DB);
