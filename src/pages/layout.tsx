@@ -8,6 +8,9 @@ export default function Page(props: any) {
     <html>
       <head>
         <title>{title}</title>
+        <link href="/static/globals.css" rel="stylesheet" />
+        <link href="/static/micromodal.css" rel="stylesheet" />
+        <link href="/static/main.css" rel="stylesheet" />
       </head>
       <body>
         <div className="text-center py-2">
@@ -29,7 +32,9 @@ export default function Page(props: any) {
     )
 }
 /*
-        <link href="/static/globals.css" rel="stylesheet" />
-        <link href="/static/micromodal.css" rel="stylesheet" />
-        <link href="/static/main.css" rel="stylesheet" />
+{import.meta.env.PROD ? (
+    <link href="/static/index.css" rel="stylesheet" />
+) : (
+    <link href="/src/index.css" rel="stylesheet" />
+)}   
 */

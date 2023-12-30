@@ -1,7 +1,7 @@
 import { Hono } from 'hono'
 import { renderToString } from 'react-dom/server';
 import type { Database } from '@cloudflare/d1'
-import './index.css'
+//import './index.css'
 //
 interface Env {
   DB: Database
