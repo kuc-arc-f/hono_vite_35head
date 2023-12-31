@@ -12,6 +12,16 @@
 
 hono + preact.js + pages + D1, headless CMS sample
 
+
+***
+### Setup
+
+* .env
+```
+VITE_USER_NAME=hoge
+VITE_USER_PASSWORD=123456
+```
+
 ***
 ### blog 
 

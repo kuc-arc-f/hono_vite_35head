@@ -9,22 +9,12 @@ interface Env {
 //
 const app = new Hono()
 //basicAuth
-/*
-const basicName = import.meta.env.VITE_USER_NAME;
-const basicPassword = import.meta.env.VITE_USER_PASSWORD;
-app.use(
-  "/*",
-  basicAuth({
-    username: basicName,
-    password: basicPassword,
-  })
-);
-*/
 // router
 import taskRouter from './routes/tasks';
 import siteRouter from './routes/site';
 import postRouter from './routes/post';
 //
+import Login from './pages/login/App';
 // sites
 import SiteIndex from './pages/sites/App';
 import SiteShow from './pages/sites/show/App';
@@ -35,6 +25,17 @@ import PostsEdit from './pages/posts/edit/App';
 import PostsShow from './pages/posts/show/App';
 
 //
+app.get('/', async (c) => { 
+  let page = c.req.query('page');
+  if(!page) { page = '1';}
+console.log("page=", page);
+  return c.html(renderToString(<SiteIndex items={[]} page={page} />));
+});
+//Login
+app.get('/login', async (c) => { 
+  return c.html(renderToString(<Login items={[]} page={0} />));
+});
+/*
 function Page(props: any) {
   return (
   <div>
@@ -43,13 +44,8 @@ function Page(props: any) {
   </div>
   )
 }
+*/
 //
-app.get('/', async (c) => { 
-  let page = c.req.query('page');
-  if(!page) { page = '1';}
-console.log("page=", page);
-  return c.html(renderToString(<SiteIndex items={[]} page={page} />));
-});
 app.get('/sites/:id', async (c) => { 
   const {id} = c.req.param();
   const body = {id: id}; 

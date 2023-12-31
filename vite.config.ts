@@ -9,10 +9,14 @@ export default defineConfig(({ mode }) => {
         lib: {
           entry: [
             './src/client.ts',
+            './src/client/Layout.ts',
+            './src/client/Login.ts',
             './src/client/SiteIndex.ts',
             './src/client/PostIndex.ts',
             './src/client/PostCreate.ts',
             './src/client/PostEdit.ts',
+            './src/client/lib/LibConfig.ts',
+            './src/client/lib/LibCookie.ts',
           ],
           formats: ['es'],
           fileName: '[name]',
