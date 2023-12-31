@@ -198,6 +198,18 @@ console.log("result=", result);
             const result = await this.desiplayPreview();
 //console.log("result=", result);
         }); 
+        //slide_btn
+        const slide_btn = document.querySelector('#slide_btn') as HTMLInputElement;
+        slide_btn?.addEventListener('change', async () => {
+      console.log("slide_btn.change=", slide_btn.checked);
+          if(slide_btn.checked) {
+            console.log("checked"); 
+            const result = await this.desiplayPreview();
+          }else{
+            console.log("checked-NONE");
+            const result = await this.displayEdit(); 
+          }
+        }); 
     },
 }
 PostEdit.initProc();

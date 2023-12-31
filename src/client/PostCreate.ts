@@ -178,7 +178,18 @@ console.log("result=", result);
         btn_preview?.addEventListener('click', async () => {
             const result = await this.desiplayPreview();
 //console.log("result=", result);
-        });        
+        });  
+        //slide_btn
+        const slide_btn = document.querySelector('#slide_btn') as HTMLInputElement;
+        slide_btn?.addEventListener('change', async () => {
+// console.log("slide_btn.change=", slide_btn.checked);
+            if(slide_btn.checked) {
+            const result = await this.desiplayPreview();
+            }else{
+            const result = await this.displayEdit(); 
+            }
+        });
+
     },
 }
 PostCreate.initProc();
