@@ -26,7 +26,7 @@ li {
     display: list-item;
     text-align: -webkit-match-parent;
 }
-#preview_box hr{
+#content_html hr{
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
     border-bottom: 2px solid #DDD;
