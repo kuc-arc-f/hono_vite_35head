@@ -108,22 +108,13 @@ console.log(json);
             let ret: any[] = [];
             const item = {
                 siteId: id,
+                "limit": 5,
+                "offset": 0,
             }
+//            const json = await HttpCommon.post(item, "/api/posts/get_list_page");
             const json = await HttpCommon.post(item, "/api/posts/get_list");
 console.log(json);
 /*
-            const body = JSON.stringify(item);		
-            const res = await fetch("/api/posts/get_list", {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},      
-                body: body
-            });
-            const json = await res.json()
-   
-            if (res.status !== 200) {
-                console.error("error, status <> 200");
-                throw new Error(await res.text());
-            }
 */
             ret = json.data;
             return ret;
@@ -137,6 +128,10 @@ console.log(json);
         //console.log("init");
         const id = (<HTMLInputElement>document.querySelector("#item_id")).value;
         console.log("id=", id);
+        //page_number
+        const page_number = (<HTMLInputElement>document.querySelector("#page_number")).value;
+console.log("page_number=", page_number);
+
         const res = await this.getList(Number(id));
 console.log(res);
         this.displayItems(res);

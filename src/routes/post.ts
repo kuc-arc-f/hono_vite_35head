@@ -51,6 +51,47 @@ console.log("#get_list");
      *
      * @return
      */ 
+    get_list_page: async function(body, c, DB)
+    {
+console.log("#get_list");
+        try{    
+            const sql = `
+            SELECT 
+            Post."id"
+            ,Post."createdAt"
+            ,Post."title"
+            ,Post."content"
+            ,Post."siteId"
+            ,Post."categoryId"
+            ,Category."name" as CategoryName
+            FROM Post 
+            LEFT OUTER JOIN Category
+            ON Category."id" = Post.categoryId
+            WHERE Post.siteId = ${body.siteId}
+            ORDER BY Post.id DESC
+            LIMIT ${body.limit}
+            OFFSET ${body.offset};
+            `; 
+console.log(sql);
+            const result = await DB.prepare(sql).all();
+//console.log(result.results);
+            if(result.results.length < 1) {
+                console.error("Error, results.length < 1");
+                return [];
+            }
+            return result.results;
+        } catch (e) {
+            console.error(e);
+            return [];
+        } 
+    },
+
+    /**
+     *
+     * @param
+     *
+     * @return
+     */ 
     search: async function(body, c, DB)
     {
 //console.log("#search");

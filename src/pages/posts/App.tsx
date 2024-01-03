@@ -25,6 +25,7 @@ export default function Page(props: any) {
         </div>
         <hr className="my-2" />
         <input type="text" className="d-none" id="item_id" defaultValue={props.id} />
+        <input type="text" className="d-none" id="page_number" defaultValue={props.page} />
         <div id="root"></div>
         
         {/* paginate */}

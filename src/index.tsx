@@ -51,10 +51,13 @@ app.get('/login', async (c) => {
 app.get('/sites/:id', async (c) => { 
   const {id} = c.req.param();
   const body = {id: id}; 
+  let page = c.req.query('page');
+  if(!page) { page = '1';}
+console.log("page=", page);
   const item = await siteRouter.get(body, c, c.env.DB);
 console.log(item);
   console.log("id=", id);
-  return c.html(renderToString(<PostsIndex item={item} id={Number(id)} />));
+  return c.html(renderToString(<PostsIndex item={item} id={Number(id)} page={Number(page)} />));
 });
 app.get('/posts/create/:id', async (c) => { 
   const {id} = c.req.param();
@@ -91,6 +94,11 @@ app.post('/api/posts/create', async (c) => {
 app.post('/api/posts/get_list', async (c) => {
   const body = await c.req.json();
   const resulte = await postRouter.get_list(body, c, c.env.DB);
+  return c.json({ret: "OK", data: resulte});
+});
+app.post('/api/posts/get_list_page', async (c) => {
+  const body = await c.req.json();
+  const resulte = await postRouter.get_list_page(body, c, c.env.DB);
   return c.json({ret: "OK", data: resulte});
 });
 app.post('/api/posts/get', async (c) => { 
