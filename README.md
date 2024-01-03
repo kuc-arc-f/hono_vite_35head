@@ -6,7 +6,7 @@
 
  date    : 2023/12/28
 
- update  : 2024/01/01 
+ update  : 2024/01/02
 ***
 ### Summary
 
@@ -20,6 +20,7 @@ hono + preact.js + pages + D1, headless CMS sample
 ```
 VITE_USER_NAME=hoge
 VITE_USER_PASSWORD=123456
+VITE_API_KEY="123"
 ```
 
 ***

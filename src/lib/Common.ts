@@ -6,12 +6,12 @@ const Common = {
   *
   * @return
   */   
-  validApiKey: async function (env: any, body: any): Promise<any>
+  validApiKey: async function (body: any): Promise<any>
   {
     try{
       let ret = false;
-      const envKey = env.API_KEY;
-      //console.log("envKey=", envKey);
+      const envKey = import.meta.env.VITE_API_KEY;
+//console.log("envKey=", envKey);
       if (!body.api_key) {
         return ret;
       }

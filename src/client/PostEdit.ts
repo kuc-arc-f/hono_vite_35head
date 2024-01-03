@@ -2,6 +2,7 @@
 import { h, Component, render } from 'preact';
 import htm from 'htm';
 import { marked } from 'marked';
+import HttpCommon from './lib/HttpCommon';
 
 const html = htm.bind(h);
 console.log("#PostEdit.client.ts");
@@ -34,20 +35,8 @@ const PostEdit = {
                 categoryId: 0,
                 userId: 0,
             }
-//console.log("title=", titleValue);
-console.log(item);
-            const body = JSON.stringify(item);		
-            const res = await fetch("/api/posts/update", {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},      
-                body: body
-            });
-            const json = await res.json()
-console.log(json);   
-            if (res.status !== 200) {
-                console.error("error, status <> 200");
-                throw new Error(await res.text());
-            }
+            const json = await HttpCommon.post(item, "/api/posts/update");
+//console.log(json);
             if (json.ret !==  "OK") {
                 console.error("Error, json.ret <> OK");
                 return ret;
@@ -75,20 +64,8 @@ console.log(json);
                 //@ts-ignore
                 id: Number(id),
             }
-console.log(item);
-//console.log("title=", titleValue);
-            const body = JSON.stringify(item);	
-            const res = await fetch("/api/posts/delete", {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},      
-                body: body
-            });
-            if (res.status !== 200) {
-                console.error("error, status <> 200");
-                throw new Error(await res.text());
-            }
-            const json = await res.json()
-console.log(json);   
+            const json = await HttpCommon.post(item, "/api/posts/delete");
+//console.log(item);
             if (json.ret !==  "OK") {
                 console.error("Error, json.ret <> OK");
                 return ret;

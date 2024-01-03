@@ -1,6 +1,7 @@
 
 import { h, Component, render } from 'preact';
 import htm from 'htm';
+import HttpCommon from './lib/HttpCommon';
 
 const html = htm.bind(h);
 console.log("#Page4.client.ts");
@@ -30,20 +31,8 @@ const SiteIndex = {
                 name: titleValue,
                 content: contentValue,
             }
-//console.log("title=", titleValue);
-console.log(item);
-            const body = JSON.stringify(item);		
-            const res = await fetch("/api/sites/create", {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},      
-                body: body
-            });
-            const json = await res.json()
-console.log(json);   
-            if (res.status !== 200) {
-                console.error("error, status <> 200");
-                throw new Error(await res.text());
-            }
+            const json = await HttpCommon.post(item, "/api/sites/create");
+//console.log(json);
             if (json.ret !==  "OK") {
                 console.error("Error, json.ret <> OK");
                 return ret;
@@ -104,18 +93,8 @@ console.log(json);
             let ret: any[] = [];
             const item = {
             }
-            const body = JSON.stringify(item);		
-            const res = await fetch("/api/sites/get_list", {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},      
-                body: body
-            });
-            const json = await res.json()
-console.log(json);   
-            if (res.status !== 200) {
-                console.error("error, status <> 200");
-                throw new Error(await res.text());
-            }
+            const json = await HttpCommon.post(item, "/api/sites/get_list");
+//console.log(json);   
             ret = json.data;
             return ret;
         } catch (e) {

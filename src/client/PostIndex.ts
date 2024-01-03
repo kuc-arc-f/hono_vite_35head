@@ -1,6 +1,7 @@
 
 import { h, Component, render } from 'preact';
 import htm from 'htm';
+import HttpCommon from './lib/HttpCommon';
 
 const html = htm.bind(h);
 console.log("#Page4.client.ts");
@@ -108,6 +109,9 @@ console.log(json);
             const item = {
                 siteId: id,
             }
+            const json = await HttpCommon.post(item, "/api/posts/get_list");
+console.log(json);
+/*
             const body = JSON.stringify(item);		
             const res = await fetch("/api/posts/get_list", {
                 method: 'POST',
@@ -115,11 +119,12 @@ console.log(json);
                 body: body
             });
             const json = await res.json()
-console.log(json);   
+   
             if (res.status !== 200) {
                 console.error("error, status <> 200");
                 throw new Error(await res.text());
             }
+*/
             ret = json.data;
             return ret;
         } catch (e) {

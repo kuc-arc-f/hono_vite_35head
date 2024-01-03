@@ -2,13 +2,25 @@ import { Hono } from 'hono'
 import { basicAuth } from 'hono/basic-auth'
 import { renderToString } from 'react-dom/server';
 import type { Database } from '@cloudflare/d1'
+import Common from './lib/Common';
 //
 interface Env {
   DB: Database
 }
 //
 const app = new Hono()
-//basicAuth
+//api-Middleware-auth
+app.use("/api/*", async (c, next) => {
+  const body = await c.req.json();
+  console.log(body);
+  const v = await Common.validApiKey(body);
+console.log(v);
+  if(!v){
+    return c.json({ret: "NG", data: [], message: "Error, api-Middleware-auth"});
+  }
+  await next();
+});
+
 // router
 import taskRouter from './routes/tasks';
 import siteRouter from './routes/site';
@@ -35,22 +47,12 @@ console.log("page=", page);
 app.get('/login', async (c) => { 
   return c.html(renderToString(<Login items={[]} page={0} />));
 });
-/*
-function Page(props: any) {
-  return (
-  <div>
-    <h1 className="text-4xl font-bold">Top</h1>
-    <hr className="my-2" />
-  </div>
-  )
-}
-*/
 //
 app.get('/sites/:id', async (c) => { 
   const {id} = c.req.param();
   const body = {id: id}; 
   const item = await siteRouter.get(body, c, c.env.DB);
-//  console.log(item);
+console.log(item);
   console.log("id=", id);
   return c.html(renderToString(<PostsIndex item={item} id={Number(id)} />));
 });
