@@ -15,9 +15,8 @@ const Login = {
         try{
             const name = import.meta.env.VITE_USER_NAME;
             const pass = import.meta.env.VITE_USER_PASSWORD;
-console.log(name);
-console.log(pass);
-
+//console.log(name);
+//console.log(pass);
             let ret = false;
             const password = document.querySelector<HTMLInputElement>('#password');
             let passwordValue = "";

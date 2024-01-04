@@ -17,6 +17,7 @@ export default defineConfig(({ mode }) => {
             './src/client/PostEdit.ts',
             './src/client/lib/LibConfig.ts',
             './src/client/lib/LibCookie.ts',
+            './src/client/lib/LibPagenate.ts',
           ],
           formats: ['es'],
           fileName: '[name]',

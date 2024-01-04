@@ -2,8 +2,11 @@
 import { h, Component, render } from 'preact';
 import htm from 'htm';
 import HttpCommon from './lib/HttpCommon';
+import LibPagenate from './lib/LibPagenate';
 
 const html = htm.bind(h);
+const perPage = 100;
+let pageNumber = 1;
 console.log("#Page4.client.ts");
 //
 const PostIndex = {
@@ -85,9 +88,6 @@ console.log(json);
                 );
             });
             /*
-            <a href="/posts/${element.id}">
-                <button  class="btn-outline-purple ms-2 my-2">Show</button>
-            </a>
             */
             render(li, document.getElementById("root"));
     
@@ -123,19 +123,47 @@ console.log(json);
             throw new Error('Error , getList');
         }
     }, 
+    /**
+     *
+     * @param
+     *
+     * @return
+     */    
+    getListPage : async function(id: number): Promise<any>
+    {
+        try{
+            let ret: any[] = [];
+            const pinfo = LibPagenate.getPageStart(pageNumber, perPage);
+//console.log(pinfo);
+            const item = {
+                siteId: id,
+//                "limit": pinfo.end,
+                "limit": perPage,
+                "offset": pinfo.start,
+            }
+console.log(item);
+
+            const json = await HttpCommon.post(item, "/api/posts/get_list_page");
+console.log(json);
+/*
+*/
+            ret = json.data;
+            return ret;
+        } catch (e) {
+            console.error(e);
+            throw new Error('Error , getListPage');
+        }
+    },     
     /**/
     initProc: async function() {
         //console.log("init");
         const id = (<HTMLInputElement>document.querySelector("#item_id")).value;
         console.log("id=", id);
-        //page_number
         const page_number = (<HTMLInputElement>document.querySelector("#page_number")).value;
 console.log("page_number=", page_number);
-
-        const res = await this.getList(Number(id));
-console.log(res);
+        const res = await this.getListPage(Number(id));
+//console.log(res);
         this.displayItems(res);
-//displayItems
         //btn
         const button = document.querySelector('#save');
         button?.addEventListener('click', async () => {
@@ -145,6 +173,25 @@ console.log("result=", result);
                 location.reload();
             }
         }); 
+        //page_next
+        const page_next = document.querySelector('#page_next');
+        page_next?.addEventListener('click', async () => {
+            pageNumber += 1;
+            const res = await this.getListPage(Number(id));
+            this.displayItems(res);
+//console.log("result=");
+        }); 
+        //page_before
+        const page_before = document.querySelector('#page_before');
+        page_before?.addEventListener('click', async () => {
+            if(pageNumber >= 1) {
+                pageNumber = pageNumber -  1;
+            }
+            const res = await this.getListPage(Number(id));
+            this.displayItems(res);
+//console.log("result=");
+        }); 
+
     },
 }
 PostIndex.initProc();

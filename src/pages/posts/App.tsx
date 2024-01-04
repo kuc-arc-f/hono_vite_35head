@@ -30,10 +30,8 @@ export default function Page(props: any) {
         
         {/* paginate */}
         <div className="paginate_wrap py-2">
-          <a href={`/tasks?page=${beforePage}`}><button className="btn-outline-purple"> ＜ </button>
-          </a>
-          <a href={`/tasks?page=${nextPage}`}><button className="btn-outline-purple"> ＞ </button>
-          </a>
+          <button className="btn-outline-purple" id="page_before"> ＜ </button>
+          <button className="btn-outline-purple" id="page_next"> ＞ </button>
         </div>
         <hr className="my-8" />
         {/* JS */}
