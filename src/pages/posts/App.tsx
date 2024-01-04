@@ -16,12 +16,16 @@ export default function Page(props: any) {
   return (
   <Layout>
     <div>
-        <h1 className="text-4xl font-bold">Site : {props.item.name}</h1>
+        <div className="text-center">
+          <h1 className="text-4xl font-bold">Site : {props.item.name}</h1>
+        </div>
         <hr className="my-2" />
-        <h3 className="text-3xl font-bold">Posts-index</h3>
-        <hr className="my-2" />
-        <div className="py-1">
+        <div className="flex flex-row">
+          <div className="flex-1 p-0 m-1 "><h3 className="text-3xl font-bold">Posts-index</h3>
+          </div>
+          <div className="flex-1 pt-2 m-1 text-center">
             <a href={`/posts/create/${props.id}`} className="btn-purple ms-2">Create</a>
+          </div>
         </div>
         <hr className="my-2" />
         <input type="text" className="d-none" id="item_id" defaultValue={props.id} />

@@ -52,12 +52,6 @@ export default function Page(props: any) {
         })}
         </ul>
         {/* paginate */}
-        <div className="paginate_wrap py-2">
-          <a href={`/tasks?page=${beforePage}`}><button className="btn-outline-purple"> ＜ </button>
-          </a>
-          <a href={`/tasks?page=${nextPage}`}><button className="btn-outline-purple"> ＞ </button>
-          </a>
-        </div>
         <hr className="my-8" />
         {/* JS */}
         {import.meta.env.PROD ? (
@@ -71,6 +65,10 @@ export default function Page(props: any) {
 }
 
 /*
-> ＞ <
->Before<
+<div className="paginate_wrap py-2">
+  <a href={`/tasks?page=${beforePage}`}><button className="btn-outline-purple"> ＜ </button>
+  </a>
+  <a href={`/tasks?page=${nextPage}`}><button className="btn-outline-purple"> ＞ </button>
+  </a>
+</div>
 */
