@@ -99,10 +99,10 @@ console.log(sql);
             if (body) {
                 //userId = ${body.userId}
                 const sql = `
-                SELECT * FROM Task
+                SELECT * FROM Post
                 WHERE title like '%${body.seachKey}%'
                 ORDER BY id DESC
-                LIMIT 1000
+                LIMIT 100
                 `;  
 console.log(sql);
                 const result = await DB.prepare(sql).all();

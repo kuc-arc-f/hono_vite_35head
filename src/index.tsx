@@ -96,6 +96,11 @@ app.post('/api/posts/get_list', async (c) => {
   const resulte = await postRouter.get_list(body, c, c.env.DB);
   return c.json({ret: "OK", data: resulte});
 });
+app.post('/api/posts/search', async (c) => {
+  const body = await c.req.json();
+  const resulte = await postRouter.search(body, c, c.env.DB);
+  return c.json({ret: "OK", data: resulte});
+});
 app.post('/api/posts/get_list_page', async (c) => {
   const body = await c.req.json();
   const resulte = await postRouter.get_list_page(body, c, c.env.DB);

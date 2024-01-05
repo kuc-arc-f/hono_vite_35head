@@ -111,11 +111,8 @@ console.log(json);
                 "limit": 5,
                 "offset": 0,
             }
-//            const json = await HttpCommon.post(item, "/api/posts/get_list_page");
             const json = await HttpCommon.post(item, "/api/posts/get_list");
 console.log(json);
-/*
-*/
             ret = json.data;
             return ret;
         } catch (e) {
@@ -137,24 +134,50 @@ console.log(json);
 //console.log(pinfo);
             const item = {
                 siteId: id,
-//                "limit": pinfo.end,
                 "limit": perPage,
                 "offset": pinfo.start,
             }
 console.log(item);
-
             const json = await HttpCommon.post(item, "/api/posts/get_list_page");
 console.log(json);
-/*
-*/
             ret = json.data;
             return ret;
         } catch (e) {
             console.error(e);
             throw new Error('Error , getListPage');
         }
-    },     
-    /**/
+    }, 
+    /**
+     *
+     * @param
+     *
+     * @return
+     */   
+    search : async function(id: number): Promise<any>
+    {
+        try{
+            const searchKey = (<HTMLInputElement>document.querySelector("#searchKey")).value;
+            let ret: any[] = [];
+            const item = {
+                siteId: id,
+                seachKey: searchKey,
+            }
+console.log(item);
+            const json = await HttpCommon.post(item, "/api/posts/search");
+console.log(json);
+            ret = json.data;
+            return ret;
+        } catch (e) {
+            console.error(e);
+            throw new Error('Error , search');
+        }
+    },    
+    /**
+     *
+     * @param
+     *
+     * @return
+     */
     initProc: async function() {
         //console.log("init");
         const id = (<HTMLInputElement>document.querySelector("#item_id")).value;
@@ -191,7 +214,16 @@ console.log("result=", result);
             this.displayItems(res);
 //console.log("result=");
         }); 
-
+        const btn_search = document.querySelector('#btn_search');
+        btn_search?.addEventListener('click', async () => {
+            const paginate_wrap = document.querySelector(`#paginate_wrap`) as HTMLInputElement;
+            if (!paginate_wrap.classList.contains('d-none')) {
+                paginate_wrap?.classList.add('d-none');
+            }
+            const res = await this.search(Number(id));
+            this.displayItems(res);
+//console.log(res);
+        }); 
     },
 }
 PostIndex.initProc();
