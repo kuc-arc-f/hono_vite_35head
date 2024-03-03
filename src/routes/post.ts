@@ -101,6 +101,7 @@ console.log(sql);
                 const sql = `
                 SELECT * FROM Post
                 WHERE title like '%${body.seachKey}%'
+                AND siteId = ${body.siteId}
                 ORDER BY id DESC
                 LIMIT 100
                 `;  
